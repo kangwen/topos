@@ -1,0 +1,66 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: topos-web-server
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/topos?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: topos
+    password: topos
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      validation-query: SELECT 1
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+  quartz:
+    auto-startup: true
+    job-store-type: memory
+    properties:
+      org.quartz.scheduler.instanceName: toposWebScheduler
+      org.quartz.threadPool.threadCount: 2
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: AUTO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+topos:
+  security:
+    api:
+      # Ant 路径；命中则 permitAll，且 ParentAnonymousPathFilter 标记后 JWT 过滤器不解析 Token
+      anonymous-paths:
+        - /api/v1/**
+      jwt:
+        secret: change-me-jwt-secret-min-16
+        expiration-minutes: 10080
+  cors:
+    api:
+      # H5 Vite 默认 5174；localhost 与 127.0.0.1 视为不同 Origin，需分别配置
+      # 生产公网 API 与 H5 若从该 IP 访问，需加入对应 Origin（App 原生请求多数无 Origin，不依赖此项）
+      allowed-origins: http://localhost:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000,http://127.0.0.1:3000,http://192.168.3.11:5174,http://81.68.70.43:8081,http://81.68.70.43
+
+logging:
+  level:
+    root: INFO
+    com.topos: INFO
+    org.flywaydb: INFO
