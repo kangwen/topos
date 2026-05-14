@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.topos.admin.common.core.domain.AdminResult;
 import com.topos.admin.common.core.domain.entity.SysConfig;
-import com.topos.admin.common.core.page.toposPageSupport;
+import com.topos.admin.common.core.page.ToposPageSupport;
 import com.topos.admin.common.core.page.TableDataInfo;
 import com.topos.admin.system.mapper.SysConfigMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -51,7 +51,7 @@ public class SysConfigController {
             w.eq(SysConfig::getConfigType, configType);
         }
         Page<SysConfig> page = sysConfigMapper.selectPage(new Page<>(pageNum, pageSize), w.orderByAsc(SysConfig::getConfigId));
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:config:query')")

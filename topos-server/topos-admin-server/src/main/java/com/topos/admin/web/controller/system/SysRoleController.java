@@ -9,7 +9,7 @@ import com.topos.admin.common.core.domain.entity.SysRoleDept;
 import com.topos.admin.common.core.domain.entity.SysRoleMenu;
 import com.topos.admin.common.core.domain.entity.SysUser;
 import com.topos.admin.common.core.domain.entity.SysUserRole;
-import com.topos.admin.common.core.page.toposPageSupport;
+import com.topos.admin.common.core.page.ToposPageSupport;
 import com.topos.admin.common.core.page.TableDataInfo;
 import com.topos.admin.system.mapper.SysDeptMapper;
 import com.topos.admin.system.mapper.SysRoleDeptMapper;
@@ -81,7 +81,7 @@ public class SysRoleController {
             w.eq(SysRole::getStatus, status);
         }
         Page<SysRole> page = sysRoleMapper.selectPage(new Page<>(pageNum, pageSize), w.orderByAsc(SysRole::getRoleSort));
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:role:query')")
@@ -171,7 +171,7 @@ public class SysRoleController {
         Set<Long> userIds = sysUserRoleMapper.selectList(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getRoleId, roleId))
                 .stream().map(SysUserRole::getUserId).collect(Collectors.toSet());
         if (userIds.isEmpty()) {
-            return toposPageSupport.of(new Page<SysUser>(pageNum, pageSize, 0));
+            return ToposPageSupport.of(new Page<SysUser>(pageNum, pageSize, 0));
         }
         LambdaQueryWrapper<SysUser> w = new LambdaQueryWrapper<SysUser>().in(SysUser::getUserId, userIds).eq(SysUser::getDelFlag, "0");
         if (StringUtils.hasText(userName)) {
@@ -181,7 +181,7 @@ public class SysRoleController {
             w.like(SysUser::getPhonenumber, phonenumber);
         }
         Page<SysUser> page = sysUserMapper.selectPage(new Page<>(pageNum, pageSize), w);
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:role:list')")
@@ -205,7 +205,7 @@ public class SysRoleController {
             w.like(SysUser::getPhonenumber, phonenumber);
         }
         Page<SysUser> page = sysUserMapper.selectPage(new Page<>(pageNum, pageSize), w);
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:role:edit')")

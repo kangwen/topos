@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.topos.admin.common.core.domain.AdminResult;
 import com.topos.admin.common.core.domain.entity.SysDictData;
-import com.topos.admin.common.core.page.toposPageSupport;
+import com.topos.admin.common.core.page.ToposPageSupport;
 import com.topos.admin.common.core.page.TableDataInfo;
 import com.topos.admin.system.mapper.SysDictDataMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -54,7 +54,7 @@ public class SysDictDataController {
         }
         Page<SysDictData> page = sysDictDataMapper.selectPage(new Page<>(pageNum, pageSize),
                 w.orderByAsc(SysDictData::getDictSort));
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:dict:query')")

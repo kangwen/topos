@@ -24,10 +24,12 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.2.12</spring-boot.version>
-        <mybatis-plus.version>3.5.9</mybatis-plus.version>
-        <druid.version>1.2.23</druid.version>
-        <jjwt.version>0.12.6</jjwt.version>
-        <hutool.version>5.8.34</hutool.version>
+        <mybatis-plus.version>3.5.16</mybatis-plus.version>
+        <druid.version>1.2.28</druid.version>
+        <jjwt.version>0.13.0</jjwt.version>
+        <hutool.version>5.8.44</hutool.version>
+        <aws.sdk.version>2.44.5</aws.sdk.version>
+        <nacos-client.version>3.2.1-2026.04.03</nacos-client.version>
     </properties>
 
     <dependencyManagement>
@@ -36,6 +38,13 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
                 <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>software.amazon.awssdk</groupId>
+                <artifactId>bom</artifactId>
+                <version>${aws.sdk.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -85,9 +94,9 @@
                 <version>${hutool.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.qiniu</groupId>
-                <artifactId>qiniu-java-sdk</artifactId>
-                <version>7.15.1</version>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

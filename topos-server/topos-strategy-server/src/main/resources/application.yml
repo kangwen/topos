@@ -50,9 +50,10 @@ topos:
       # Ant 路径；命中则 permitAll，且 ParentAnonymousPathFilter 标记后 JWT 过滤器不解析 Token
       anonymous-paths:
         - /api/v1/**
-      jwt:
-        secret: change-me-jwt-secret-min-16
-        expiration-minutes: 10080
+      strategy:
+        jwt:
+          secret: change-me-jwt-secret-min-16
+          expiration-minutes: 10080
   cors:
     api:
       # H5 Vite 默认 5174；localhost 与 127.0.0.1 视为不同 Origin，需分别配置

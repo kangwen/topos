@@ -37,7 +37,7 @@
             <artifactId>mysql-connector-j</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- 迁移脚本在 resources/db/migration；不进 dal 的 target/classes（否则 IDE 与 admin 拷贝双份 classpath 会报 duplicate version），仅由 admin/api 从 dal 源码目录拷入各自 target/classes；jar 内亦排除 -->
+        <!-- 迁移脚本在 resources/db/migration；不进 dal 的 target/classes（否则 IDE 与 admin 拷贝双份 classpath 会报 duplicate version），仅由 admin/strategy 从 dal 源码目录拷入各自 target/classes；jar 内亦排除 -->
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>

@@ -9,7 +9,7 @@ import com.topos.admin.common.core.domain.entity.SysUser;
 import com.topos.admin.common.core.domain.entity.SysUserPost;
 import com.topos.admin.common.core.domain.entity.SysUserRole;
 import com.topos.admin.common.core.domain.model.LoginUser;
-import com.topos.admin.common.core.page.toposPageSupport;
+import com.topos.admin.common.core.page.ToposPageSupport;
 import com.topos.admin.common.core.page.TableDataInfo;
 import com.topos.admin.common.utils.SecurityUtils;
 import com.topos.admin.system.mapper.SysDeptMapper;
@@ -105,7 +105,7 @@ public class SysUserController {
                 u.setDept(d);
             }
         }
-        return toposPageSupport.of(page);
+        return ToposPageSupport.of(page);
     }
 
     @PreAuthorize("@ss.hasPermi('system:user:query')")
