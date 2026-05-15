@@ -1,9 +1,23 @@
 server:
   port: 8083
+  tomcat:
+    # 大量 WebSocket 长连接时按需调大；结合 LB idle 超时与 topos.wss.ping-interval-ms
+    threads:
+      max: 500
+    max-connections: 20000
+    accept-count: 2000
 
 spring:
   application:
     name: topos-strategy-server
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      # 多副本时每实例必须不同 group，否则每条消息只会到一个实例。K8s 建议注入 INSTANCE_ID=Pod 名。
+      group-id: ${spring.application.name}-${INSTANCE_ID:local}
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
   flyway:
     enabled: true
     locations: classpath:db/migration
@@ -59,6 +73,25 @@ topos:
       # H5 Vite 默认 5174；localhost 与 127.0.0.1 视为不同 Origin，需分别配置
       # 生产公网 API 与 H5 若从该 IP 访问，需加入对应 Origin（App 原生请求多数无 Origin，不依赖此项）
       allowed-origins: http://localhost:5173,http://localhost:5174,http://127.0.0.1:5174,http://localhost:8080,http://127.0.0.1:8080,http://localhost:3000,http://127.0.0.1:3000,http://192.168.3.11:5174,http://81.68.70.43:8081,http://81.68.70.43
+  wss:
+    endpoint-path: /ws/v1/strategy
+    allowed-origin-patterns:
+      - "*"
+    client-id-claim: clientId
+    max-client-id-length: 256
+    max-sessions: 20000
+    close-previous-session-on-duplicate: true
+    ping-interval-ms: 25000
+    broadcast-batch-size: 500
+    send-timeout-ms: 5000
+    max-text-message-buffer-size: 65536
+    max-session-idle-timeout-ms: 120000
+  kafka:
+    trade-signal:
+      # 本地无 Kafka 时置 false；生产开启并保证 bootstrap-servers 可达
+      enabled: false
+      topic: topos.trade-signals
+      listener-concurrency: 1
 
 logging:
   level:

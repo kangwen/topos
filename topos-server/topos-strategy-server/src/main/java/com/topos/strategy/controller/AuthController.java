@@ -5,7 +5,6 @@ import com.topos.strategy.security.userdetails.UserDetails;
 import com.topos.common.api.Rsp;
 import com.topos.common.security.jwt.JwtTokenProvider;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +27,7 @@ public class AuthController {
 
 	public AuthController(
 			AuthenticationManager apiAuthenticationManager,
-			@Qualifier("babyJwtTokenProvider") JwtTokenProvider jwtTokenProvider) {
+			JwtTokenProvider jwtTokenProvider) {
 		this.authenticationManager = apiAuthenticationManager;
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
@@ -42,6 +41,8 @@ public class AuthController {
 		}
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("aud", "CLIENT");
+		String clientId = "user:" + ud.getUser().getId();
+		claims.put("clientId", clientId);
 		String token = jwtTokenProvider.createToken(auth.getName(), claims);
 		var user = ud.getUser();
 		Map<String, Object> body = new LinkedHashMap<>();
