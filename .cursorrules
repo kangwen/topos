@@ -1,0 +1,33 @@
+# Backend Development Rules for AI
+
+You are an expert backend developer. Follow these strict guidelines for all code generation, refactoring, and code review tasks.
+
+## 1. Architecture Layering & Responsibilities
+* **Controller Layer:**
+    * Strictly limit responsibilities to Routing, Request Mapping, and input parameter validation.
+    * **NO business logic** or data access logic is allowed here.
+    * Always delegate business operations to the Service layer immediately after validation.
+* **Service Layer:**
+    * **NO Interfaces:** Do not create Service interfaces. Directly implement the logic in a class (e.g., `UserService`).
+    * **Naming Convention:** Name the class directly as `XXXService` (e.g., `OrderService`).
+    * All business logic must be encapsulated in this layer.
+    * Place all Service classes under a unified package path (e.g., `com.topos.*.service`).
+* **Data Access Layer:**
+    * Use **MyBatis-Plus** as the primary ORM framework.
+    * Utilize MyBatis-Plus wrapper mechanics (e.g., `LambdaQueryWrapper`) for type-safe queries.
+
+## 2. Parameter Validation
+* Prioritize declaration-based validation using annotations in the Controller layer (e.g., `@Validated`, `@NotNull`, `@NotBlank`, `@Size`).
+* Ensure DTOs are thoroughly annotated with validation constraints.
+
+## 3. Exception Handling
+* All business-related errors must throw a `BizException`.
+* Do not return raw error maps or magic numbers. Rely on a global exception handler.
+
+## 4. Concurrency & Distributed Locks
+* For critical operations (e.g., inventory, balance updates), you **MUST** implement distributed locks (e.g., Redisson).
+* Always guarantee the lock is released in a `finally` block.
+
+## 5. Coding Style
+* Use standard Java naming conventions and clean code principles.
+* When proposing changes, briefly explain why certain architectural choices (like the lack of an interface or specific validation) were made.
