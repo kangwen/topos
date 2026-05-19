@@ -1,0 +1,36 @@
+# 本地 WebSocket 压测：spring.profiles.active=loadtest
+# 可用环境变量覆盖 MySQL：SPRING_DATASOURCE_URL / USERNAME / PASSWORD
+biz:
+  ses-client: false
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:topos_loadtest;MODE=MySQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  flyway:
+    enabled: false
+  quartz:
+    auto-startup: false
+
+management:
+  health:
+    db:
+      enabled: false
+
+topos:
+  security:
+    strategy:
+      anonymous-paths:
+        - /api/v1/auth/**
+        - /api/v1/wss/load-test/**
+      jwt:
+        secret: change-me-jwt-secret-min-16
+        expiration-minutes: 10080
+  kafka:
+    trade-signal:
+      enabled: false
+  wss:
+    load-test:
+      enabled: true

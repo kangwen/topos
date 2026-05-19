@@ -1,0 +1,11 @@
+# 可选：Docker 方式启动 Toxiproxy（upstream 指向宿主机 strategy-server）
+services:
+  toxiproxy:
+    image: ghcr.io/shopify/toxiproxy:2.12.0
+    container_name: topos-toxiproxy
+    ports:
+      - "8474:8474"
+      - "18083:18083"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: ["-host", "0.0.0.0"]

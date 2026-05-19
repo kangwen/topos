@@ -86,6 +86,9 @@ topos:
     send-timeout-ms: 5000
     max-text-message-buffer-size: 65536
     max-session-idle-timeout-ms: 120000
+    # 本地压测：配合 profile loadtest 开启；生产务必 false
+    load-test:
+      enabled: false
   kafka:
     trade-signal:
       # 本地无 Kafka 时置 false；生产开启并保证 bootstrap-servers 可达
